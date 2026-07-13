@@ -13,8 +13,8 @@
     "react-eject": "react-scripts eject",
     "electron-start": "wait-on http://localhost:3000 && electron .",
     "electron-dev": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-build": "npm run react-build && electron-builder -w",
-    "build": "npm run react-build && electron-builder -w",
+    "electron-build": "electron-builder -w --publish never",
+    "build": "npm run react-build && electron-builder -w --publish never",
     "start": "npm run electron-dev"
   },
   "dependencies": {
