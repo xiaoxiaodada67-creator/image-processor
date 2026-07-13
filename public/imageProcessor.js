@@ -1,52 +1,90 @@
-const sharp = require('sharp');
-const fs = require('fs').promises;
-const path = require('path');
-const ExifParser = require('exifparser');
+const sharp = require("sharp");
+const fs = require("fs").promises;
+const path = require("path");
 
-// Remove metadata from image
+// =====================
+// Remove metadata
+// =====================
 async function removeMetadata(inputPath) {
   try {
-    const image = sharp(inputPath);
-    const metadata = await image.metadata();
-    
-    // Create new image without metadata
-    let processed = sharp(inputPath).withMetadata(false);
-    
-    return processed;
+    // Sharp 默认不会保留元数据
+    return sharp(inputPath);
   } catch (error) {
-    console.error('Error removing metadata:', error);
+    console.error("Remove metadata failed:", error);
     throw error;
   }
 }
 
+// =====================
 // Convert image format
-async function convertFormat(inputImage, format) {
-  const formatMap = {
-    jpg: 'jpeg',
-    jpeg: 'jpeg',
-    png: 'png',
-    webp: 'webp',
-    gif: 'gif',
-    bmp: 'bmp',
-  };
+// =====================
+async function convertFormat(image, format = "jpg") {
+  switch (format.toLowerCase()) {
+    case "jpg":
+    case "jpeg":
+      return image.jpeg({
+        quality: 95,
+        mozjpeg: true,
+      });
 
-  const targetFormat = formatMap[format.toLowerCase()] || 'jpeg';
-  return inputImage.toFormat(targetFormat);
+    case "png":
+      return image.png({
+        compressionLevel: 9,
+      });
+
+    case "webp":
+      return image.webp({
+        quality: 95,
+      });
+
+    case "gif":
+      return image.gif();
+
+    case "bmp":
+      return image.bmp();
+
+    case "tiff":
+      return image.tiff({
+        quality: 95,
+      });
+
+    case "avif":
+      return image.avif({
+        quality: 80,
+      });
+
+    default:
+      return image.jpeg({
+        quality: 95,
+        mozjpeg: true,
+      });
+  }
 }
 
-// Apply image adjustments
-async function applyAdjustments(inputImage, options) {
-  let image = inputImage;
+// =====================
+// Apply adjustments
+// =====================
+async function applyAdjustments(image, options = {}) {
 
-  // Resize
-  if (options.resize && options.resize.width && options.resize.height) {
-    image = image.resize(options.resize.width, options.resize.height, {
-      fit: 'cover',
-    });
+  if (
+    options.resize &&
+    options.resize.width &&
+    options.resize.height
+  ) {
+    image = image.resize(
+      options.resize.width,
+      options.resize.height,
+      {
+        fit: "cover",
+      }
+    );
   }
 
-  // Crop
-  if (options.crop && options.crop.width && options.crop.height) {
+  if (
+    options.crop &&
+    options.crop.width &&
+    options.crop.height
+  ) {
     image = image.extract({
       left: options.crop.left || 0,
       top: options.crop.top || 0,
@@ -55,71 +93,92 @@ async function applyAdjustments(inputImage, options) {
     });
   }
 
-  // Brightness
-  if (options.brightness && options.brightness !== 0) {
-    image = image.modulate({ brightness: 1 + options.brightness / 100 });
+  if (options.brightness) {
+    image = image.modulate({
+      brightness: 1 + options.brightness / 100,
+    });
   }
 
-  // Contrast
-  if (options.contrast && options.contrast !== 0) {
-    image = image.modulate({ saturation: 1 + options.contrast / 100 });
+  if (options.contrast) {
+    image = image.modulate({
+      saturation: 1 + options.contrast / 100,
+    });
   }
 
   return image;
 }
 
-// Main processing function
-async function processImages(files, options) {
-  const results = [];
-  const outputDir = options.outputDirectory || './processed-images';
+// =====================
+// Main process
+// =====================
+async function processImages(files = [], options = {}) {
 
-  // Create output directory if it doesn't exist
-  try {
-    await fs.mkdir(outputDir, { recursive: true });
-  } catch (error) {
-    console.error('Error creating output directory:', error);
-  }
+  const results = [];
+
+  const outputDir =
+    options.outputDirectory ||
+    path.join(process.cwd(), "processed-images");
+
+  await fs.mkdir(outputDir, {
+    recursive: true,
+  });
 
   for (const file of files) {
-    try {
-      const filename = path.basename(file);
-      const nameWithoutExt = path.parse(filename).name;
-      const outputFormat = options.format || 'jpg';
-      const outputFilename = `${nameWithoutExt}-processed.${outputFormat}`;
-      const outputPath = path.join(outputDir, outputFilename);
 
-      // Start with image
+    try {
+
+      const ext =
+        (options.format || "jpg").toLowerCase();
+
+      const basename =
+        path.parse(file).name;
+
+      const outputPath =
+        path.join(
+          outputDir,
+          `${basename}-processed.${ext}`
+        );
+
       let image = sharp(file);
 
-      // Remove metadata
-      if (options.removeMetadata) {
-        image = image.withMetadata(false);
+      // 默认去除元数据
+      if (!options.removeMetadata) {
+        image = image.withMetadata();
       }
 
-      // Apply adjustments
-      if (options.adjustments) {
-        image = await applyAdjustments(image, options.adjustments);
-      }
+      image =
+        await applyAdjustments(
+          image,
+          options.adjustments
+        );
 
-      // Convert format
-      image = await convertFormat(image, outputFormat);
+      image =
+        await convertFormat(
+          image,
+          ext
+        );
 
-      // Save processed image
       await image.toFile(outputPath);
 
       results.push({
         inputFile: file,
         outputFile: outputPath,
         success: true,
-        message: 'Processed successfully',
+        message: "Processed successfully",
       });
+
     } catch (error) {
+
+      console.error(error);
+
       results.push({
         inputFile: file,
         success: false,
         message: error.message,
       });
+
     }
+
   }
 
   return results;
