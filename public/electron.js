@@ -1,82 +1,135 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
-const path = require('path');
-const isDev = require('electron-is-dev');
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require("electron");
+const path = require("path");
 
 let mainWindow;
+
+// Electron 官方推荐
+const isDev = !app.isPackaged;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    minWidth: 1000,
+    minHeight: 700,
+    show: false,
+    autoHideMenuBar: true,
+
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false,
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      enableRemoteModule: false,
-    },
+      nodeIntegration: false,
+      sandbox: false
+    }
   });
 
-  const startUrl = isDev
-    ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, '../build/index.html')}`;
+  // 隐藏菜单
+  Menu.setApplicationMenu(null);
 
-  mainWindow.loadURL(startUrl);
-
+  // 加载页面
   if (isDev) {
+    mainWindow.loadURL("http://localhost:3000");
     mainWindow.webContents.openDevTools();
+  } else {
+    mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
   }
 
-  mainWindow.on('closed', () => {
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
+
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 }
 
-app.on('ready', createWindow);
+// Electron Ready
+app.whenReady().then(() => {
+  createWindow();
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
+
+// 全部关闭
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+// ========================
+// Image Processor
+// ========================
 
-// IPC handlers for image processing
-const imageProcessor = require('./imageProcessor');
+const imageProcessor = require("./imageProcessor");
 
-ipcMain.handle('process-images', async (event, files, options) => {
+// 批量处理图片
+ipcMain.handle("process-images", async (event, files, options) => {
   try {
     const results = await imageProcessor.processImages(files, options);
-    return { success: true, results };
-  } catch (error) {
-    return { success: false, error: error.message };
+
+    return {
+      success: true,
+      results
+    };
+  } catch (err) {
+    console.error(err);
+
+    return {
+      success: false,
+      error: err.message
+    };
   }
 });
 
-ipcMain.handle('select-input-folder', async () => {
+// 选择输入目录
+ipcMain.handle("select-input-folder", async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory'],
+    properties: ["openDirectory"]
   });
+
+  if (result.canceled) return null;
+
   return result.filePaths[0];
 });
 
-ipcMain.handle('select-output-folder', async () => {
+// 选择输出目录
+ipcMain.handle("select-output-folder", async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory'],
+    properties: ["openDirectory"]
   });
+
+  if (result.canceled) return null;
+
   return result.filePaths[0];
 });
 
-ipcMain.handle('select-images', async () => {
+// 选择图片
+ipcMain.handle("select-images", async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
-    properties: ['openFile', 'multiSelections'],
+    properties: ["openFile", "multiSelections"],
     filters: [
-      { name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp'] },
-    ],
+      {
+        name: "Images",
+        extensions: [
+          "jpg",
+          "jpeg",
+          "png",
+          "webp",
+          "gif",
+          "bmp",
+          "tiff",
+          "avif"
+        ]
+      }
+    ]
   });
+
+  if (result.canceled) return [];
+
   return result.filePaths;
 });
