@@ -1,122 +1,122 @@
-# Image Processor
+# 图片处理器
 
-A desktop application for batch image processing with metadata removal, format conversion, and image editing capabilities.
+一个功能强大的桌面应用程序，用于批量处理图片，支持元数据移除、格式转换和图像编辑。
 
-## Features
+## 功能特性
 
-- ✅ **Batch Processing** - Process multiple images at once with one click
-- ✅ **Metadata Removal** - Remove EXIF, IPTC, and XMP metadata from images
-- ✅ **Format Conversion** - Convert between JPG, PNG, WebP, GIF, and BMP formats
-- ✅ **Image Editing** - Adjust brightness and contrast
-- ✅ **Privacy Focused** - All processing happens locally on your computer
-- ✅ **Windows Installer** - Easy installation with NSIS installer
+- ✅ **批量处理** - 一键处理多张图片
+- ✅ **移除元数据** - 删除 EXIF、IPTC 和 XMP 元数据
+- ✅ **格式转换** - 支持 JPG、PNG、WebP、GIF 和 BMP 格式转换
+- ✅ **图像编辑** - 调整亮度和对比度
+- ✅ **隐私保护** - 所有处理都在本地计算机上进行
+- ✅ **Windows 安装程序** - 使用 NSIS 安装程序便于安装
 
-## System Requirements
+## 系统要求
 
-- Windows 7 or later
-- 100 MB free disk space
-- No internet connection required
+- Windows 7 或更高版本
+- 100 MB 可用磁盘空间
+- 无需互联网连接
 
-## Installation
+## 安装
 
-1. Download the latest installer from the [releases page](https://github.com/xiaoxiaodada67-creator/image-processor/releases)
-2. Run the installer and follow the on-screen instructions
-3. Launch Image Processor from your Start Menu or Desktop shortcut
+1. 从 [发布页面](https://github.com/xiaoxiaodada67-creator/image-processor/releases) 下载最新的安装程序
+2. 运行安装程序并按照屏幕上的说明进行操作
+3. 从"开始"菜单或桌面快捷方式启动图片处理器
 
-## Usage
+## 使用方法
 
-### Basic Workflow
+### 基本工作流程
 
-1. **Select Images** - Click "Select Images" to choose one or more image files
-2. **Choose Output Location** - Select where to save the processed images
-3. **Configure Settings**:
-   - Choose output format (JPG, PNG, WebP, etc.)
-   - Enable/disable metadata removal
-   - Adjust brightness and contrast as needed
-4. **Process** - Click the "Process All Images" button to process all selected images at once
+1. **选择图片** - 点击"选择图片"选择一张或多张图片文件
+2. **选择输出位置** - 选择保存处理后图片的位置
+3. **配置设置**:
+   - 选择输出格式（JPG、PNG、WebP 等）
+   - 启用/禁用元数据移除
+   - 根据需要调整亮度和对比度
+4. **处理** - 点击"处理所有图片"按钮，一键处理所有选定的图片
 
-### Detailed Settings
+### 详细设置说明
 
-#### Metadata Removal
-- **Enabled by default** - Removes all EXIF, IPTC, and XMP metadata
-- Useful for privacy protection when sharing images
+#### 移除元数据
+- **默认启用** - 移除所有 EXIF、IPTC 和 XMP 元数据
+- 在分享图片时有助于保护隐私
 
-#### Output Format
-- **JPG** - Compressed format, good for photos
-- **PNG** - Lossless format, good for graphics
-- **WebP** - Modern compressed format
-- **GIF** - Animated format support
-- **BMP** - Uncompressed format
+#### 输出格式
+- **JPG** - 压缩格式，适合照片
+- **PNG** - 无损格式，适合图形
+- **WebP** - 现代压缩格式
+- **GIF** - 支持动画格式
+- **BMP** - 未压缩格式
 
-#### Brightness & Contrast
-- **Brightness**: Adjust from -50% to +50%
-- **Contrast**: Adjust from -50% to +50%
-- Use the sliders to fine-tune image appearance
+#### 亮度和对比度
+- **亮度**: 调整范围 -50% 至 +50%
+- **对比度**: 调整范围 -50% 至 +50%
+- 使用滑块微调图像外观
 
-## Building from Source
+## 从源代码构建
 
-### Prerequisites
+### 前置要求
 
-- Node.js (v14 or later)
-- npm or yarn
+- Node.js (v14 或更高版本)
+- npm 或 yarn
 
-### Setup
+### 安装步骤
 
 ```bash
-# Install dependencies
+# 安装依赖
 npm install
 
-# Start development mode
+# 启动开发模式
 npm start
 
-# Build for Windows
+# 为 Windows 构建
 npm run build
 
-# Create installer
+# 创建安装程序
 npm run electron-build
 ```
 
-### Development
+### 开发
 
 ```bash
-# Start Electron and React dev servers
+# 启动 Electron 和 React 开发服务器
 npm start
 
-# The app will open with hot reload enabled
+# 应用将打开并启用热重载
 ```
 
-## Output
+## 输出
 
-Processed images are saved with `-processed` suffix in the selected output directory.
+处理后的图片将以 `-processed` 后缀保存在选定的输出目录中。
 
-Example:
-- Input: `photo.jpg`
-- Output: `photo-processed.jpg`
+示例：
+- 输入: `photo.jpg`
+- 输出: `photo-processed.jpg`
 
-## Privacy
+## 隐私声明
 
-All image processing happens locally on your computer. No files are uploaded to any server.
+所有图像处理都在您的计算机本地进行。没有文件会上传到任何服务器。
 
-## License
+## 许可证
 
 MIT
 
-## Support
+## 技术支持
 
-For issues, feature requests, or questions, please open an issue on GitHub.
+如有问题、功能建议或疑问，请在 GitHub 上提出议题。
 
-## Troubleshooting
+## 故障排除
 
-### App won't start
-- Try uninstalling and reinstalling the application
-- Make sure you have administrator privileges
-- Check that you have at least 100 MB free disk space
+### 应用无法启动
+- 尝试卸载并重新安装应用
+- 确保您有管理员权限
+- 检查您至少有 100 MB 的可用磁盘空间
 
-### Processing fails
-- Ensure the output directory is writable
-- Check that you have enough disk space for the output files
-- Try with smaller images first
+### 处理失败
+- 确保输出目录可写
+- 检查您有足够的磁盘空间用于输出文件
+- 先尝试用较小的图片
 
-### Metadata still present
-- Some image formats may not support metadata removal
-- Try converting to JPG or PNG format
+### 元数据仍然存在
+- 某些图像格式可能不支持元数据移除
+- 尝试转换为 JPG 或 PNG 格式
