@@ -1,8 +1,19 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('electron', {
-  processImages: (files, options) => ipcRenderer.invoke('process-images', files, options),
-  selectInputFolder: () => ipcRenderer.invoke('select-input-folder'),
-  selectOutputFolder: () => ipcRenderer.invoke('select-output-folder'),
-  selectImages: () => ipcRenderer.invoke('select-images'),
+contextBridge.exposeInMainWorld("electron", {
+  processImages: async (files, options) => {
+    return await ipcRenderer.invoke("process-images", files, options);
+  },
+
+  selectInputFolder: async () => {
+    return await ipcRenderer.invoke("select-input-folder");
+  },
+
+  selectOutputFolder: async () => {
+    return await ipcRenderer.invoke("select-output-folder");
+  },
+
+  selectImages: async () => {
+    return await ipcRenderer.invoke("select-images");
+  }
 });
