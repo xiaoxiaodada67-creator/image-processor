@@ -1,0 +1,275 @@
+.processor-container {
+  width: 100%;
+  max-width: 900px;
+}
+
+.processor-card {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.processor-card h1 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.section h2 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.setting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting label {
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.setting input[type="text"],
+.setting select {
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+  transition: border-color 0.3s;
+}
+
+.setting input[type="text"]:focus,
+.setting select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.setting-input {
+  display: flex;
+  gap: 10px;
+}
+
+.setting-input input {
+  flex: 1;
+}
+
+.setting.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.setting.checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.setting.slider input[type="range"] {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+}
+
+.value {
+  color: #667eea;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+.file-list {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid #667eea;
+}
+
+.file-list p {
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.file-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.file-list li {
+  color: #666;
+  padding: 5px 0;
+  font-size: 0.9rem;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #d0d0d0;
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: #48bb78;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #38a169;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(72, 187, 120, 0.3);
+}
+
+.btn-large {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.results-section {
+  margin-top: 30px;
+  padding: 25px;
+  background: #f0f9ff;
+  border-radius: 10px;
+  border-left: 4px solid #48bb78;
+}
+
+.results-section h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.result-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  align-items: flex-start;
+}
+
+.result-item.success {
+  border-left: 3px solid #48bb78;
+}
+
+.result-item.error {
+  border-left: 3px solid #f56565;
+}
+
+.result-icon {
+  font-size: 1.2rem;
+  font-weight: 700;
+  min-width: 24px;
+}
+
+.result-item.success .result-icon {
+  color: #48bb78;
+}
+
+.result-item.error .result-icon {
+  color: #f56565;
+}
+
+.result-text {
+  flex: 1;
+}
+
+.result-filename {
+  color: #333;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.result-message {
+  color: #666;
+  margin: 0;
+  font-size: 0.85rem;
+  font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+@media (max-width: 600px) {
+  .processor-card {
+    padding: 20px;
+  }
+
+  .processor-card h1 {
+    font-size: 1.8rem;
+  }
+
+  .setting-input {
+    flex-direction: column;
+  }
+
+  .setting-input input,
+  .setting-input button {
+    width: 100%;
+  }
+}
